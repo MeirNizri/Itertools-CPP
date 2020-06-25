@@ -21,13 +21,13 @@ using namespace std;
 
 TEST_CASE("Test range") {
     int value = 0;
-    for(int i : range(0,10)) {
+    for(int i : range(0,15)) {
         CHECK(i == value);
         value++;
     }
     
     value = -10;
-    for(int i : range(-10,0)) {
+    for(int i : range(-10,5)) {
         CHECK(i == value);
         value++;
     }
@@ -40,9 +40,9 @@ TEST_CASE("Test range") {
 
 
 TEST_CASE("Test accumulate") {
-    vector<int> results = {0,1,3,6,10,15,21,28};
+    vector<int> results = {0,1,3,6,10,15,21,28,36,45};
     int i = 0;
-    for (int j : accumulate(range(0,8))) {
+    for (int j : accumulate(range(0,10))) {
         CHECK(j == results.at(i));
         i++;
     }
@@ -93,7 +93,7 @@ TEST_CASE("Test filterfalse") {
     }
     
     int value = 0;
-    for (int i : filterfalse([](int x){return x>=5;}, range(0,11))) {
+    for (int i : filterfalse([](int x){return x>=10;}, range(0,15))) {
         CHECK(i == value);
         value++;
     }
@@ -117,3 +117,4 @@ TEST_CASE("Test compress") {
         i++;
     }
 }
+
