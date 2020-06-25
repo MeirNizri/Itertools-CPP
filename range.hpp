@@ -1,5 +1,5 @@
 /**
- * This class רeceives as input two integers, and represents all numbers from first to last, 
+ * This class receives as input two integers, and represents all numbers from first to last, 
  * including the first and not the last.
  * 
  * Author: Meir Nizri
@@ -16,6 +16,7 @@ namespace itertools {
         int finish;
 
     public:
+        typedef int value_type;
         range(int s, int f) : start(s), finish(f) {}
 
         // Iterator of class range

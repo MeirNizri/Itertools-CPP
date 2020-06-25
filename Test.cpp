@@ -86,13 +86,13 @@ TEST_CASE("Test accumulate with functors") {
 TEST_CASE("Test filterfalse") {
     vector<int> results = {0,2,4,6,8,10};
     int i = 0;
-    for (int j : filterfalse([](int x){return x%2 == 0;}, range(0,11))) {
+    for (int j : filterfalse([](int x){return x%2 == 1;}, range(0,11))) {
         CHECK(j == results.at(i));
         CHECK_FALSE(j == results.at(i)+1);
         i++;
     }
     
-    int value = 5;
+    int value = 0;
     for (int i : filterfalse([](int x){return x>=5;}, range(0,11))) {
         CHECK(i == value);
         value++;

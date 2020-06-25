@@ -14,58 +14,83 @@
 using namespace std;
 namespace itertools {
 
-    template <typename Container1, typename Container2> class compress {
-        Container1 container1;
-        Container2 container2;
+    template <typename C, typename C_bool> class compress {
+        C cont;
+        C_bool cont_bool;
         
     public:
-        compress(Container1 c1, Container2 c2) : container1(c1), container2(c2) {}
+        compress(C c, C_bool c_bool) : cont(c), cont_bool(c_bool) {}
     
         // Iterator of class compress
         class iterator{
-            typename Container1::iterator itr1;  
-            typename Container2::iterator itr2;
+            typename C::iterator itr_cont;  
+            typename C::iterator itr_cont_end;
+            typename C_bool::iterator itr_bool; 
+            decltype(*(cont.begin())) current_true;
 
         public:
-            iterator(typename Container1::iterator i1, typename Container2::iterator i2) : itr1(i1), itr2(i2) {}
+            iterator(typename C::iterator beg, typename C::iterator end, typename C_bool::iterator it_bool)
+                : itr_cont(beg), itr_cont_end(end), itr_bool(it_bool), current_true(*beg)
+            {
+                while(itr_cont != itr_cont_end) {
+                    if(*itr_bool) {
+                        current_true = *itr_cont;
+                        break;
+                    }
+                    itr_cont++;
+                    itr_bool++;
+                }
+            }
 
             auto operator*() const {
-                return *itr1;
+                return current_true;
             }
             
             iterator& operator++() {
-                itr1++;
-                itr2++;
+                itr_cont++;
+                itr_bool++;
+                while(itr_cont != itr_cont_end) {
+                    if(*itr_bool) {
+                        current_true = *itr_cont;
+                        break;
+                    }
+                    itr_cont++;
+                    itr_bool++;
+                }
 			    return *this;
     		}
     		
     		const iterator operator++(int) {
     			iterator tmp = *this;
-    			itr1++;
-                itr2++;
+                itr_cont++;
+                itr_bool++;
+                while(itr_cont != itr_cont_end) {
+                    if(*itr_bool) {
+                        current_true = *itr_cont;
+                        break;
+                    }
+                    itr_cont++;
+                    itr_bool++;
+                }
 			    return tmp;
     		}
-            
-            iterator& operator=(const iterator& it) {
-                return *this;
-            }
 
             bool operator==(const iterator& it) const {
-			    return itr1 == it.itr1;
+			    return itr_cont == it.itr_cont;
 		    }
 
     		bool operator!=(const iterator& it) const {
-			    return itr1 != it.itr1;
+			    return itr_cont != it.itr_cont;
     		}
     	};  // END OF CLASS ITERATOR
 
 
     	iterator begin() {
-    		return iterator{container1.begin(), container2.begin()};
+    		return iterator{cont.begin(), cont.end(), cont_bool.begin()};
     	}
 
     	iterator end() {
-    		return iterator{container1.end(), container2.end()};
+    		return iterator{cont.end(), cont.end(), cont_bool.end()};
     	}
     }; 
 }
